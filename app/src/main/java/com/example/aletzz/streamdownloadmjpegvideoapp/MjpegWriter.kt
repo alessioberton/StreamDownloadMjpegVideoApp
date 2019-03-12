@@ -74,7 +74,7 @@ class MjpegWriter {
 
         try {
             startRecording(file.absolutePath + "/" + szFileName)
-            Log.e(TAG, "adb pull " + mjpegFile!!.absolutePath)
+            Log.e(TAG, "adb pull " + mjpegFile?.absolutePath)
         } catch (e: Exception) {
             Log.e(TAG, e.message)
         }
@@ -104,7 +104,7 @@ class MjpegWriter {
         try {
             bos?.flush()
         } catch (e: IOException) {
-            Log.e("mjpegwriter", ": " + e.toString())
+            Log.e("mjpegwriter:  ", e.toString())
         }
 
     }

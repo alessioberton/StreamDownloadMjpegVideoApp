@@ -83,29 +83,30 @@ class MainActivity : Activity() {
 
         if (Utils.Util.isConnectedToInternet(this)) {
             try {
-                surface_container_video_one?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoOne))
+                surface_container_video_one?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoOne.toString())!!)
                 surface_container_video_one?.setDisplayMode(MjpegView.SIZE_FULLSCREEN)
 
-                MjpegInputStream.read(streamVideoOne, this, {
-                    mjpegThread = Thread(Runnable {
-                        //                        synchronized (runningTestOne) {
-                        while (runningTestOne) {
-                            try {
-                                val mjpegContainer = it.readMjpegFrame()
-                                if (mMjpegWriterVideoOne != null) mMjpegWriterVideoOne?.saveByteArrayToFile(mjpegContainer.data)
-                            } catch (e: Exception) {
-                                Log.e(TAG, "-> " + e.toString())
+                MjpegInputStream.read(streamVideoOne, this, object : MjpegInputStream.MJpegListener {
+                    override fun onStream(stream: MjpegInputStream) {
+                        mjpegThread = Thread(Runnable {
+                            while (runningTestOne) {
+                                try {
+                                    val mjpegContainer = stream.readMjpegFrame()
+                                    if (mMjpegWriterVideoOne != null) mMjpegWriterVideoOne?.saveByteArrayToFile(mjpegContainer.data)
+                                } catch (e: Exception) {
+                                    Log.e(TAG, "-> " + e.toString())
+                                }
                             }
-                        }
-                    })
-                    mjpegThread.start()
+                        })
+                        mjpegThread.start()
+                    }
                 })
 
                 t = Thread(Runnable {
                     try {
                         Thread.sleep(500)
                         runOnUiThread {
-                            mMjpegWriterVideoOne?.recordMjpeg(rootPath, streamVideoOne)
+                            mMjpegWriterVideoOne?.recordMjpeg(rootPath!!, streamVideoOne!!)
                         }
                     } catch (e: Exception) {
                         Log.e(TAG, "-> " + e.toString())
@@ -138,28 +139,29 @@ class MainActivity : Activity() {
 
         if (Utils.Util.isConnectedToInternet(this)) {
             try {
-                surface_container_video_two?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoTwo))
+                surface_container_video_two?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoTwo.toString())!!)
                 surface_container_video_two?.setDisplayMode(MjpegView.SIZE_FULLSCREEN)
 
-                MjpegInputStream.read(streamVideoTwo, this, {
-                    mjpegThreadTwo = Thread(Runnable {
-                        //                        synchronized (runningTestTwo) {
-                        while (runningTestTwo) {
-                            try {
-                                val mjpegContainer = it.readMjpegFrame()
-                                if (mMjpegWriterVideoTwo != null) mMjpegWriterVideoTwo?.saveByteArrayToFile(mjpegContainer.data)
-                            } catch (e: Exception) {
-                                Log.e(TAG, "-> " + e.toString())
+                MjpegInputStream.read(streamVideoTwo, this, object : MjpegInputStream.MJpegListener {
+                    override fun onStream(stream: MjpegInputStream) {
+                        mjpegThreadTwo = Thread(Runnable {
+                            while (runningTestTwo) {
+                                try {
+                                    val mjpegContainer = stream.readMjpegFrame()
+                                    if (mMjpegWriterVideoTwo != null) mMjpegWriterVideoTwo?.saveByteArrayToFile(mjpegContainer.data)
+                                } catch (e: Exception) {
+                                    Log.e(TAG, "-> " + e.toString())
+                                }
                             }
-                        }
-                    })
-                    mjpegThreadTwo.start()
+                        })
+                        mjpegThreadTwo.start()
+                    }
                 })
 
                 t2 = Thread(Runnable {
                     try {
                         Thread.sleep(500)
-                        runOnUiThread { mMjpegWriterVideoTwo?.recordMjpeg(rootPath, streamVideoTwo) }
+                        runOnUiThread { mMjpegWriterVideoTwo?.recordMjpeg(rootPath!!, streamVideoTwo!!) }
                     } catch (e: Exception) {
                         Log.e(TAG, "-> " + e.toString())
                     }
@@ -179,9 +181,9 @@ class MainActivity : Activity() {
             Log.e(TAG, "ONRESUMEALL")
             runningTestOne = true
             runningTestTwo = true
-            surface_container_video_one?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoOne))
+            surface_container_video_one?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoOne!!)!!)
             surface_container_video_two?.setDisplayMode(MjpegView.SIZE_FULLSCREEN)
-            surface_container_video_two?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoTwo))
+            surface_container_video_two?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoTwo!!)!!)
             surface_container_video_one?.setDisplayMode(MjpegView.SIZE_FULLSCREEN)
             mjpegThread.start()
             mjpegThreadTwo.start()
@@ -189,13 +191,13 @@ class MainActivity : Activity() {
             Log.e(TAG, "ONRESUMEONE")
             runningTestOne = true
             mjpegThread.start()
-            surface_container_video_one?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoOne))
+            surface_container_video_one?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoOne!!)!!)
             surface_container_video_one?.setDisplayMode(MjpegView.SIZE_FULLSCREEN)
         } else if (haveToContinueVideoTwo) {
             Log.e(TAG, "ONRESUMETWO")
             runningTestTwo = true
             mjpegThreadTwo.start()
-            surface_container_video_two?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoTwo))
+            surface_container_video_two?.setSource(com.example.aletzz.streamdownloadmjpegvideoapp.mjpeg.MjpegInputStream.read(streamVideoTwo!!)!!)
             surface_container_video_two?.setDisplayMode(MjpegView.SIZE_FULLSCREEN)
         }
     }

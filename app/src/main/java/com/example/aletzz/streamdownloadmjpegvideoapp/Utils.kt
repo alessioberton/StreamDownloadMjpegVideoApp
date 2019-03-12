@@ -39,7 +39,7 @@ internal class Utils {
                 }
             }
 
-            fun getRootDirPathSD(): String {
+            fun getRootDirPathSD(): String? {
                 return System.getenv("EXTERNAL_STORAGE");
             }
         }

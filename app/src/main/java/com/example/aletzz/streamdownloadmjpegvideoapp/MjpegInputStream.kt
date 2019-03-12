@@ -88,7 +88,7 @@ class MjpegInputStream(`in`: InputStream) : DataInputStream(BufferedInputStream(
         private val HEADER_MAX_LENGTH = 100
         private val FRAME_MAX_LENGTH = 40000 + HEADER_MAX_LENGTH
 
-        fun read(urlString: String, act: Activity, listener: MJpegListener): MjpegInputStream? {
+        fun read(urlString: String?, act: Activity, listener: MJpegListener): MjpegInputStream? {
 
             Thread(Runnable {
                 try {
